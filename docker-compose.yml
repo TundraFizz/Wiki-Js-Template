@@ -1,0 +1,27 @@
+version: '3.6'
+services:
+
+  mongo:
+    image: mongo:latest
+
+  monpress:
+    image: mongo-express
+    ports:
+      - published: 8081
+        target: 8081
+        mode: host
+    depends_on:
+      - mongo
+
+  wikijs:
+    image: "requarks/wiki:latest"
+    ports:
+      - published: 80
+        target: 80
+        mode: host
+    volumes:
+      - ./config.yml:/var/wiki/config.yml
+    environment:
+      WIKI_ADMIN_EMAIL: admin@wiki.js
+    depends_on:
+      - mongo
